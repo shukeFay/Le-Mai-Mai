@@ -80,7 +80,7 @@
         </div>
     </div>
     <!-- 头部区域结束 -->
-
+    <router-view></router-view>
 
     <!-- 底部区域开始 -->
     <div class="footer">
