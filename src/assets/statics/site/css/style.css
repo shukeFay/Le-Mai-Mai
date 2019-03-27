@@ -214,7 +214,7 @@ line-height: 30px;border: 1px solid #34ad2a;}
 .img-list:after{ content:"."; display:block; height:0; clear:both; visibility:hidden; }
 .img-list .nodata{ color:#999; line-height:80px; text-align:center; }
 .img-list li{ position:relative; float:left; margin:15px 0 0 15px; width:220px; height:348px;box-sizing: border-box; background:#fff; overflow:auto; _display:inline; }
-.img-list li:hover{border:1px solid red;box-sizing: border-box;width:220px;height:348px;overflow:hidden;}
+.img-list li:hover{border:1px solid #fff;box-sizing: border-box;width:220px;height:348px;overflow:hidden;}
 .img-list li .img-box{ display:block; position:relative; width:220px; height:220px; overflow:hidden;box-sizing: border-box; }
 .img-list li .img-box .abs-txt{ position:absolute; top:8px; left:0; display:inline-block; padding:0 6px; color:#fff; font-size:12px; line-height:24px; background:#c81623; text-align:center; border-radius:0 3px 3px 0; }
 .img-list li .img-box img{ width:100%; height:100%;}
