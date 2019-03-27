@@ -649,7 +649,7 @@
 
 <script>
 export default {
-  name: "app"
+  name: "首页"
 };
 </script>
 
