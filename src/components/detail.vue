@@ -198,7 +198,7 @@ export default {
       // tab的索引
       index: 1,
       // 计数器绑定的个数
-      num1:1
+      num1: 1
     };
   },
   methods: {
@@ -212,10 +212,7 @@ export default {
         });
     },
     // 计数器的事件
-    handleChange() {
-
-    
-  },
+    handleChange() {}
   },
   created() {
     this.getDetail();
