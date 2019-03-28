@@ -223,6 +223,7 @@ export default {
           // console.log(res);
           this.goodsinfo = res.data.message.goodsinfo;
           this.hotgoodslist = res.data.message.hotgoodslist;
+          
 
           // 商品图片
           this.imglist = res.data.message.imglist;
@@ -246,8 +247,13 @@ export default {
             console.log(res);
             if (res.data.status == 0) {
               this.$message.success(res.data.message);
+              this.totalcount = res.data.totalcount;
               // 本地清空
               this.comment = "";
+              //默认跳转到第一页
+              this.pageIndex =1;
+              //重新调用获取评论
+               this.getComments();
             }
           });
       }
@@ -272,7 +278,7 @@ export default {
       this.getComments();
 
     },
-    handleCurrentChange(){
+    handleCurrentChange(current){
       this.pageIndex = current;
       // 重新获取数据
       this.getComments();

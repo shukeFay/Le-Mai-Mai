@@ -31,41 +31,10 @@ Vue.filter('globalFormatTime',function(value,fmtTemplate){
 
 
 
-// 路由相关
-import VueRouter from "vue-router";
-// use
-Vue.use(VueRouter);
-
-// 导入 组件
-import index from "./components/index.vue";
-import cart from "./components/cart.vue";
-import detail from "./components/detail.vue";
-
-//路由规则
-let routes = [
-  {
-    path: "/",
-    component: index
-  },
-  {
-    path: "/index",
-    component: index
-  },
-  {
-    path: "/cart",
-    component: cart
-  },
-  {
-    path: "/detail/:id",
-    component: detail
-  }
-];
-
-let router = new VueRouter({
-  routes
-});
 
 Vue.config.productionTip = true;
+
+import router from "./router";
 
 new Vue({
   render: h => h(App),
