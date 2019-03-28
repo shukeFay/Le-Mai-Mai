@@ -13,7 +13,14 @@
         <div class="wrap-box">
           <div class="left-925">
             <div class="goods-box clearfix">
-              <div class="pic-box"></div>
+              <div class="pic-box">
+                <!-- 设置轮播图 -->
+                <el-carousel>
+                  <el-carousel-item v-for="(item,index) in imglist" :key="index">
+                    <img :src="item.thumb_path" alt>
+                  </el-carousel-item>
+                </el-carousel>
+              </div>
               <div class="goods-spec">
                 <h1>{{goodsinfo.title}}</h1>
                 <p class="subtitle">{{goodsinfo.sub_title}}</p>
@@ -97,6 +104,7 @@
                           sucmsg=" "
                           data-type="*10-1000"
                           nullmsg="请填写评论内容！"
+                          v-model="comment"
                         ></textarea>
                         <span class="Validform_checktip"></span>
                       </div>
@@ -107,6 +115,7 @@
                           type="submit"
                           value="提交评论"
                           class="submit"
+                          @click="postComment"
                         >
                         <span class="Validform_checktip"></span>
                       </div>
@@ -116,37 +125,30 @@
                     <p
                       style="margin: 5px 0px 15px 69px; line-height: 42px; text-align: center; border: 1px solid rgb(247, 247, 247);"
                     >暂无评论，快来抢沙发吧！</p>
-                    <li>
+                    <li v-for="(item,index) in commentList" :key="index">
                       <div class="avatar-box">
                         <i class="iconfont icon-user-full"></i>
                       </div>
                       <div class="inner-box">
                         <div class="info">
-                          <span>匿名用户</span>
-                          <span>2017/10/23 14:58:59</span>
+                          <span>{{item.uesr_name}}</span>
+                          <span>{{item.add_time | globalFormatTime('YYYY-MM-DDTHH:mm:ss')}}</span>
                         </div>
-                        <p>testtesttest</p>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="avatar-box">
-                        <i class="iconfont icon-user-full"></i>
-                      </div>
-                      <div class="inner-box">
-                        <div class="info">
-                          <span>匿名用户</span>
-                          <span>2017/10/23 14:59:36</span>
-                        </div>
-                        <p>很清晰调动单很清晰调动单</p>
+                        <p>{{item.content}}</p>
                       </div>
                     </li>
                   </ul>
                   <div class="page-box" style="margin: 5px 0px 0px 62px;">
-                    <div id="pagination" class="digg">
-                      <span class="disabled">« 上一页</span>
-                      <span class="current">1</span>
-                      <span class="disabled">下一页 »</span>
-                    </div>
+                     <!-- 使用饿了么ui的分页组件替换 -->
+                    <el-pagination
+                      @size-change="handleSizeChange"
+                      @current-change="handleCurrentChange"
+                      :current-page="pageIndex"
+                      :page-sizes="[10,20, 30, 40]"
+                      :page-size="pageSize"
+                      layout="total, sizes, prev, pager, next, jumper"
+                      :total="totalcount"
+                    ></el-pagination>
                   </div>
                 </div>
               </div>
@@ -198,7 +200,19 @@ export default {
       // tab的索引
       index: 1,
       // 计数器绑定的个数
-      num1: 1
+      num1: 1,
+      // 图片数组
+      imglist: [],
+      //评论数组
+      comment: "",
+      // 页码
+      pageIndex:1,
+      // 页容量
+      pageSize:10,
+      // 总条数
+      totalcount:0,
+      // 评论数组
+      commentList:[]
     };
   },
   methods: {
@@ -209,13 +223,66 @@ export default {
           // console.log(res);
           this.goodsinfo = res.data.message.goodsinfo;
           this.hotgoodslist = res.data.message.hotgoodslist;
+
+          // 商品图片
+          this.imglist = res.data.message.imglist;
         });
     },
     // 计数器的事件
-    handleChange() {}
+    handleChange() {
+      
+    },
+    //发布评论
+    postComment() {
+      if (this.comment === "") {
+        this.$comment.error("请输入内容");
+      } else {
+        //调用接口
+        this.$axios
+          .post(`site/validate/comment/post/goods/${this.$route.params.id}`, {
+            commenttxt: this.comment
+          })
+          .then(res => {
+            console.log(res);
+            if (res.data.status == 0) {
+              this.$message.success(res.data.message);
+              // 本地清空
+              this.comment = "";
+            }
+          });
+      }
+    },
+    // 获取评论的方法
+    getComments(){
+      this.$axios
+      .get(`site/comment/getbypage/goods/${this.$route.params.id}?pageIndex=${
+            this.pageIndex
+          }&pageSize=${this.pageSize}`)
+          .then(res=>{
+            console.log(res);
+            
+            this.totalcount = res.data.totalcount;
+            this.commentList = res.data.message;
+          });
+    },
+    // 页容量改变
+    handleSizeChange(size){
+      this.pageSize = size;
+      // 重新获取数据
+      this.getComments();
+
+    },
+    handleCurrentChange(){
+      this.pageIndex = current;
+      // 重新获取数据
+      this.getComments();
+    }
   },
+
   created() {
     this.getDetail();
+    //获取评论
+    this.getComments();
   },
   // 侦听器
   watch: {
@@ -228,6 +295,24 @@ export default {
 </script>
 
 <style>
+/* 详情页走马灯样式 */
+.pic-box {
+  width: 395px;
+  height: 320px;
+}
+.pic-box .el-carousel {
+  width: 100%;
+  height: 100%;
+}
+.pic-box .el-carousel__container {
+  width: 100%;
+  height: 100%;
+}
+.pic-box .el-carousel__container img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
 </style>
 
 
