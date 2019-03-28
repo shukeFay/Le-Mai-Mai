@@ -157,7 +157,7 @@
                 </div>
                 <div class="txt-box">
                   <a href="/goods/show-98.html">{{item.title}}</a>
-                  <span>{{item.add_time | formatTime}}</span>
+                  <span>{{item.add_time | globalFormatTime}}</span>
                 </div>
               </li>
 
@@ -216,8 +216,8 @@
 
 <script>
 // 导入axios
-import axios from "axios";
-import moment from "moment";
+// import axios from "axios";
+// import moment from "moment";
 export default {
   name: "index",
   data() {
@@ -233,16 +233,16 @@ export default {
     }
   },
   //过滤器
-  filters:{
-    formatTime(value){
-      return moment(value).format('YYYY-MM-DD');
-    }
-  },
+  // filters:{
+  //   formatTime(value){
+  //     return moment(value).format('YYYY-MM-DD');
+  //   }
+  // },
 
   created() {
     //顶部数据
-    axios
-    .get('http://111.230.232.110:8899/site/goods/gettopdata/goods')
+    this.$axios
+    .get('/site/goods/gettopdata/goods')
     .then(res=>{
       // console.log(res);
       this.catelist = res.data.message.catelist;
@@ -251,7 +251,8 @@ export default {
       
     });
     //底部数据
-    axios.get('http://111.230.232.110:8899/site/goods/getgoodsgroup')
+    this.$axios
+    .get('/site/goods/getgoodsgroup')
     .then(res=>{
       // console.log(res);
       this.goodslist = res.data.message;

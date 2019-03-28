@@ -181,15 +181,21 @@
                 <ul class="side-img-list">
                   <li v-for="(item,index) in hotgoodslist" :key="index">
                     <div class="img-box">
-                      <a href="#/site/goodsinfo/90" class>
+                      <!-- <a href="#/site/goodsinfo/90" class> -->
+                      <router-link :to="'/detail/'+item.id">
                         <img
                           :src="item.img_url"
                         >
-                      </a>
+                        </router-link>
+                      <!-- </a> -->
                     </div>
                     <div class="txt-box">
-                      <a href="#/site/goodsinfo/90" class>{{item.title}}</a>
-                      <span>{{item.add_time | formatTime}}</span>
+                      <!-- <a href="#/site/goodsinfo/90" class> -->
+                      <router-link :to="'/detail/'+item.id">
+                      {{item.title}}
+                      </router-link>
+                      <!-- </a> -->
+                      <span>{{item.add_time | globalFormatTime('YYYY年MM月DD日')}}</span>
                     </div>
                   </li>
 
@@ -205,8 +211,8 @@
 
 <script>
 // 导入axios
-import axios from "axios";
-import moment from "moment";
+// import axios from "axios";
+// import moment from "moment";
 
 export default {
   name: "detail",
@@ -221,15 +227,15 @@ export default {
       }
   },
    //过滤器
-  filters:{
-    formatTime(value){
-      return moment(value).format('YYYY-MM-DD');
-    }
-  },
+  // filters:{
+  //   formatTime(value){
+  //     return moment(value).format('YYYY-MM-DD');
+  //   }
+  // },
   //获取详情数据
   created(){
-      axios
-      .get(`http://111.230.232.110:8899/site/goods/getgoodsinfo/${
+      this.$axios
+      .get(`/site/goods/getgoodsinfo/${
           this.$route.params.id
         }`).then(res=>{
             // console.log(res);

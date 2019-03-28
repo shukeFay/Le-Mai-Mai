@@ -67,7 +67,8 @@
                             </a>
                         </li>
                         <li class="goods">
-                            <a href="" class="router-link-exact-active ">
+                            <a href="" class="router-link-exact-active">
+                                <!-- router-link-exact-active  -->
                                 <span class="out" style="top: 0px;">购物商城</span>
                             </a>
                         </li>
