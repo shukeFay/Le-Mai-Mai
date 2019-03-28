@@ -40,35 +40,13 @@
                     <dt>购买数量</dt>
                     <dd>
                       <div class="stock-box">
-                        <div class="el-input-number el-input-number--small">
-                          <span role="button" class="el-input-number__decrease is-disabled">
-                            <i class="el-icon-minus"></i>
-                          </span>
-                          <span role="button" class="el-input-number__increase">
-                            <i class="el-icon-plus"></i>
-                          </span>
-                          <div class="el-input el-input--small">
-                            <!---->
-                            <input
-                              autocomplete="off"
-                              size="small"
-                              type="text"
-                              rows="2"
-                              max="60"
-                              min="1"
-                              validateevent="true"
-                              class="el-input__inner"
-                              role="spinbutton"
-                              aria-valuemax="60"
-                              aria-valuemin="1"
-                              aria-valuenow="1"
-                              aria-disabled="false"
-                            >
-                            <!---->
-                            <!---->
-                            <!---->
-                          </div>
-                        </div>
+                        <el-input-number
+                          v-model="num1"
+                          @change="handleChange"
+                          :min="1"
+                          :max="10"
+                          label="描述文字"
+                        ></el-input-number>
                       </div>
                       <span class="stock-txt">
                         库存
@@ -93,10 +71,10 @@
                 class="tab-head"
                 style="position: static; top: 517px; width: 925px;"
               >
-              <!-- tab bar -->
+                <!-- tab bar -->
                 <ul>
                   <li>
-                    <a @click="index=1" :class="{selected:index==1}"          href="javascript:;">商品介绍</a>
+                    <a @click="index=1" :class="{selected:index==1}" href="javascript:;">商品介绍</a>
                   </li>
                   <li>
                     <a @click="index=2" :class="{selected:index==2}" href="javascript:;">商品评论</a>
@@ -183,22 +161,17 @@
                     <div class="img-box">
                       <!-- <a href="#/site/goodsinfo/90" class> -->
                       <router-link :to="'/detail/'+item.id">
-                        <img
-                          :src="item.img_url"
-                        >
-                        </router-link>
+                        <img :src="item.img_url">
+                      </router-link>
                       <!-- </a> -->
                     </div>
                     <div class="txt-box">
                       <!-- <a href="#/site/goodsinfo/90" class> -->
-                      <router-link :to="'/detail/'+item.id">
-                      {{item.title}}
-                      </router-link>
+                      <router-link :to="'/detail/'+item.id">{{item.title}}</router-link>
                       <!-- </a> -->
                       <span>{{item.add_time | globalFormatTime('YYYY年MM月DD日')}}</span>
                     </div>
                   </li>
-
                 </ul>
               </div>
             </div>
@@ -217,39 +190,43 @@
 export default {
   name: "detail",
   data() {
-      return {
-          // 商品详情
-          goodsinfo:{},
-          //推荐商品
-          hotgoodslist:{},
-          // tab的索引
-          index:1
-      }
+    return {
+      // 商品详情
+      goodsinfo: {},
+      //推荐商品
+      hotgoodslist: {},
+      // tab的索引
+      index: 1,
+      // 计数器绑定的个数
+      num1:1
+    };
   },
   methods: {
-    getDetail(){
-       this.$axios
-      .get(`/site/goods/getgoodsinfo/${
-          this.$route.params.id
-        }`).then(res=>{
-            // console.log(res);
-            this.goodsinfo = res.data.message.goodsinfo;
-            this.hotgoodslist = res.data.message.hotgoodslist;
-            
-        })
-    }
+    getDetail() {
+      this.$axios
+        .get(`/site/goods/getgoodsinfo/${this.$route.params.id}`)
+        .then(res => {
+          // console.log(res);
+          this.goodsinfo = res.data.message.goodsinfo;
+          this.hotgoodslist = res.data.message.hotgoodslist;
+        });
+    },
+    // 计数器的事件
+    handleChange() {
+
+    
   },
- 
-  created(){
-     this.getDetail();
+  },
+  created() {
+    this.getDetail();
   },
   // 侦听器
   watch: {
-    $route(value,oldValue){
+    $route(value, oldValue) {
       // console.log(value);
       this.getDetail();
     }
-  },
+  }
 };
 </script>
 

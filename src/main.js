@@ -4,6 +4,14 @@ import App from "./App.vue";
 //引入全局样式
 import "./assets/statics/site/css/style.css";
 
+//导入饿了么ui模块
+import ElementUI from "element-ui";
+//导入样式
+import 'element-ui/lib/theme-chalk/index.css';
+// vue插件
+Vue.use(ElementUI);
+
+
 //统一设置axios
 import axios from "axios";
 Vue.prototype.$axios = axios;
