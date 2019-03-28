@@ -226,15 +226,9 @@ export default {
           index:1
       }
   },
-   //过滤器
-  // filters:{
-  //   formatTime(value){
-  //     return moment(value).format('YYYY-MM-DD');
-  //   }
-  // },
-  //获取详情数据
-  created(){
-      this.$axios
+  methods: {
+    getDetail(){
+       this.$axios
       .get(`/site/goods/getgoodsinfo/${
           this.$route.params.id
         }`).then(res=>{
@@ -243,7 +237,19 @@ export default {
             this.hotgoodslist = res.data.message.hotgoodslist;
             
         })
-  }
+    }
+  },
+ 
+  created(){
+     this.getDetail();
+  },
+  // 侦听器
+  watch: {
+    $route(value,oldValue){
+      // console.log(value);
+      this.getDetail();
+    }
+  },
 };
 </script>
 
